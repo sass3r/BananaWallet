@@ -55,7 +55,7 @@ function generarJSON(walletId){
 function enviarJSON(json) {
   console.log(json);
   let xmlHttpRequest = new XMLHttpRequest();
-  let action = "http://192.168.1.4:8085/users";
+  let action = "http://178.128.228.106:8085/users";
   xmlHttpRequest.open("POST",action,true);
   xmlHttpRequest.setRequestHeader('Content-Type','application/json');
   xmlHttpRequest.onreadystatechange = function(respuesta){

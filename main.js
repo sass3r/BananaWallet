@@ -8,8 +8,8 @@ function createWindow () {
   win.loadFile('inicio.html');
 }
 
-function connectYanaptiChain() {
-    const cmd = spawn('bin\\multichaind.exe', ['YanaptiChain','-daemon']);
+function connectBananaChain() {
+    const cmd = spawn('multichaind', ['BananaChain','-daemon']);
     cmd.stdout.on('data', (data) => {
         console.log(`stdout: ${data}`);
     });
@@ -24,8 +24,8 @@ function connectYanaptiChain() {
 
 }
 
-function registerYanaptiChain() {
-    const cmd = spawn('bin\\multichaind.exe', ['YanaptiChain@192.168.1.4:9551']);
+function registerBananaChain() {
+    const cmd = spawn('multichaind', ['BananaChain@178.128.228.106:2883']);
 
     cmd.stdout.on('data', (data) => {
         console.log(`stdout: ${data}`);
@@ -48,13 +48,15 @@ function registerYanaptiChain() {
 }
 
 function consultarSaldo(){
-    const cmd = spawn('bin\\multichain-cli.exe', ['YanaptiChain', 'gettotalbalances']);
+    const cmd = spawn('multichain-cli', ['BananaChain', 'gettotalbalances']);
     cmd.stdout.on('data', (data) => {
         console.log(`stdout: ${data}`);
         let buffer = data.toString();
         json = JSON.parse(buffer);
         let balance = json[0];
-        let saldo = balance.qty;
+        let saldo = 0;
+        if(balance)
+        	saldo = balance.qty;
         console.log('saldo: ' + saldo);
         win.webContents.send('notify-monto',saldo);
     });
@@ -73,8 +75,8 @@ function mostrarSaldo(){
 }
 
 app.on('ready',createWindow);
-ipc.on('connect-yanaptichain',connectYanaptiChain);
-ipc.on('register-yanaptichain',registerYanaptiChain);
+ipc.on('connect-bananachain',connectBananaChain);
+ipc.on('register-bananachain',registerBananaChain);
 ipc.on('query-monto', consultarSaldo);
 ipc.on('view-saldo', mostrarSaldo);
 ipc.on('notify-token', (event, token) => {
@@ -89,7 +91,7 @@ ipc.on('get-token',(event,action)=>{
 
 ipc.on('transfer-asset',(event,data) => {
 //let object = JSON.parse(data);
-    const cmd = spawn('bin\\multichain-cli.exe', ['YanaptiChain','sendassettoaddress',data.cuenta,'YanaptiCoin',data.monto]);
+    const cmd = spawn('multichain-cli', ['BananaChain','sendassettoaddress',data.cuenta,'BananaCoin',data.monto]);
     cmd.stdout.on('data', (data) => {
         console.log(`stdout: ${data}`);
     });

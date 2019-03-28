@@ -13,7 +13,7 @@ $(document).ready(function(){
   let token = undefined;
 
   botonRegistro.click(function(){
-    registerYanaptiChain();
+    registerBananaChain();
   });
 
   formularioRegistro.submit(function(event){
@@ -55,7 +55,7 @@ function generarJSON(walletId){
 function enviarJSON(json) {
   console.log(json);
   let xmlHttpRequest = new XMLHttpRequest();
-  let action = "http://192.168.1.4:8085/users";
+  let action = "http://178.128.228.106:8085/users";
   xmlHttpRequest.open("POST",action,true);
   xmlHttpRequest.setRequestHeader('Content-Type','application/json');
   xmlHttpRequest.onreadystatechange = function(respuesta){
@@ -63,7 +63,7 @@ function enviarJSON(json) {
       if(xmlHttpRequest.status == 200){
         token = respuesta.target.response;
         window.token = token;
-        ipc.send('connect-yanaptichain');
+        ipc.send('connect-bananachain');
         ipc.send('view-saldo');
         ipc.send('notify-token',token);
         console.log(token);
@@ -73,10 +73,10 @@ function enviarJSON(json) {
   xmlHttpRequest.send(json);
 }
 
-function registerYanaptiChain(){
+function registerBananaChain(){
   if(validarFormulario()){
-    alert("Conectando YanaptiChain");
-    ipc.send('register-yanaptichain');
+    alert("Conectando BananaChain");
+    ipc.send('register-bananachain');
   }
 }
 
